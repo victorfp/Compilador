@@ -9,7 +9,7 @@ last-modified: 14/05/2014
 
 - Descricao
 
-	Este projeto, trata-se da implementacao de compilador para a linguagem Portugol simplificada. Onde a especificacao da linguagem encontra-se em https://github.com/victorfp/Compilador/Compilador/Doc.
+	Este projeto, trata-se da implementacao de compilador para a linguagem Portugol simplificada. Onde a especificacao da linguagem encontra-se em https://github.com/victorfp/Compilador/tree/master/compilador/Doc.
 
 - Execucao
 	
