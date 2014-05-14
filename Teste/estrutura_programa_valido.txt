@@ -1,4 +1,0 @@
-programa
-	inicio
-		assddd;
-	fim.
