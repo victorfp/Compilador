@@ -1,0 +1,24 @@
+/*
+* 
+* Teste de Comentario Válido 
+* 
+*/
+
+/*
+	comentario
+	/*
+		comentario aninhado
+	*/
+*/
+
+// comentando linha
+
+/*
+	//comentario de linha dentro de um bloco
+*/
+
+//comentario lexicamente valido pq identifica * e / separados
+/*
+
+*/
+*/
