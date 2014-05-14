@@ -1,0 +1,26 @@
+/*
+
+teste comentario
+
+*/
+/*
+*
+*
+*
+*
+*
+	/*
+	*/
+
+	/*
+		/*
+			/*
+				aninhado
+			*/
+		*/
+	*/
+
+	
+*/
+
+//comentario de linha
