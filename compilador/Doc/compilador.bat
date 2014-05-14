@@ -1,5 +1,6 @@
 echo off
-
-java -jar .\compilador.jar ..\Teste\*.txt
-move .\compilador ..\src
+echo Iniciando o Compilador SimplePortugol
+echo Iniciando Testes
+java -jar .\compilador.jar ..\Teste\*
+echo Sequencia de Testes Finalizados
 pause
