@@ -1,0 +1,101 @@
+/*
+	Projeto de Compiladores
+	
+	autors: Thiago Felipe Miranda Arcanjo,
+			Victor Ferreira Pereira
+	versao: 1.0.0
+	descricao: Desenvolver um compilador para a linguagem Portugol Simplificada
+	
+*/
+
+Package compilador;
+
+Helpers
+
+	all 			= [0 .. 0xffff];
+	letter 			= ['a' .. 'z'] | ['A' .. 'Z'];
+	init_var 		= letter | '_';
+	cr 				= 13;
+	lf 				= 10;
+	tab 			= 9;
+	eol 			= cr lf | cr | lf;
+	digit 			= ['0' .. '9'];
+	blank 			= ' ' | cr | lf | tab;
+	char			= letter | digit | ' ' | '_';
+	comment_line	= '/''/'[all - [lf + cr]]* eol;
+	
+States 
+	
+	normal, comment;
+	
+Tokens
+
+		{normal} programa 		= 'programa';
+		{normal} inicio 		= 'inicio';
+		{normal} fim 			= 'fim';
+		{normal} enquanto 		= 'enquanto';
+		{normal} fim_enquanto	= 'fim enquanto';
+		{normal} se 			= 'se';
+		{normal} entao 			= 'entao';
+		{normal} senao 			= 'senao';
+		{normal} fim_se 		= 'fim se';
+		{normal} para 			= 'para';
+		{normal} de				= 'de';
+		{normal} passo			= 'passo';
+		{normal} fim_para 		= 'fim para';
+		{normal} ate 			= 'ate';
+		{normal} faca 			= 'faca';
+		{normal} repita 		= 'repita';
+		{normal} avalie			= 'avalie';
+		{normal} caso 			= 'caso';
+		{normal} fim_avalie 	= 'fim avalie';
+		{normal} tipo 			= 'inteiro' | 'real' | 'caracter';
+		
+		{normal} mais 			= '+';
+		{normal} menos 			= '-';
+		{normal} barra 			= '/';
+		{normal} estrela 		= '*';
+		{normal} par_d 			= '(';
+		{normal} par_e 			= ')';
+		{normal} col_d			= '[';
+		{normal} col_e			= ']';
+		{normal} igual			= '=';
+		{normal} diferente		= '<>';
+		{normal} maior			= '>';
+		{normal} menor			= '<';
+		{normal} menor_igual	= '<=';
+		{normal} maior_igual	= '>=';
+		{normal} e				= 'e';
+		{normal} ou				= 'ou';
+		{normal} xor			= 'xor';
+		{normal} nao			= 'nao';
+		{normal} atribuicao		= ':=';
+		
+		{normal} escreva		= 'escreva';
+		{normal} leia			= 'leia';
+		
+		{normal} dois_pontos 	= ':';
+		{normal} semicolon	 	= ';';
+		{normal} ponto 			= '.';
+		{normal} virgula		= ',';
+		
+		{normal} comments		= comment_line;
+		
+		{normal} id 			= init_var (letter | digit | '_')*;
+		{normal} id_var			= init_var (letter | digit | '_')*('[' digit+ ']')?;
+		{normal} number 		= '-'? digit+;
+		{normal} number_real 	= '-'? digit+ '.' digit+;
+		{normal} string			= ''' char* ''';
+		{normal} blank 			= blank+;
+	
+		{normal->comment, comment} comment = '/*';
+
+		{comment} comment_end = '*/'; 
+		{comment} comment_body = [all - ['*' + '/']]*; 
+		{comment} star = '*'; 
+		{comment} slash = '/';
+		{comment} comment_line		= comment_line;
+	
+Ignored Tokens
+
+	blank, comments, comment;
