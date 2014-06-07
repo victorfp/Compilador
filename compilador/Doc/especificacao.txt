@@ -21,7 +21,7 @@ Helpers
 	eol 			= cr lf | cr | lf;
 	digit 			= ['0' .. '9'];
 	blank 			= ' ' | cr | lf | tab;
-	char			= letter | digit | ' ' | '_';
+	char			= [all - '''];
 	comment_line	= '/''/'[all - [lf + cr]]* eol;
 	
 States 
@@ -32,7 +32,7 @@ Tokens
 
 		{normal} programa 		= 'programa';
 		{normal} inicio 		= 'inicio';
-		{normal} fim 			= 'fim';
+		{normal} fim 			= 'fim.';
 		{normal} enquanto 		= 'enquanto';
 		{normal} fim_enquanto	= 'fim enquanto';
 		{normal} se 			= 'se';
@@ -82,8 +82,7 @@ Tokens
 		{normal} comments		= comment_line;
 		
 		{normal} id 			= init_var (letter | digit | '_')*;
-		{normal} id_var			= init_var (letter | digit | '_')*('[' digit+ ']')?;
-		{normal} number 		= '-'? digit+;
+		{normal} number		 	= '-'? (digit+);
 		{normal} number_real 	= '-'? digit+ '.' digit+;
 		{normal} string			= ''' char* ''';
 		{normal} blank 			= blank+;
@@ -99,3 +98,74 @@ Tokens
 Ignored Tokens
 
 	blank, comments, comment;
+
+Productions
+
+	init				= start?;
+	start 				= programa id inicio declaracao? comandos fim;
+	declaracao			= declaracao? tipo dois_pontos var semicolon;
+	
+	var					= {id} identificador var_tail*;
+	
+	var_tail			= virgula identificador;
+	
+	exp					= {exp} expressao exp_tail*;
+	
+	exp_tail			=  virgula expressao;
+						
+	identificador		= {id} id 
+						| {id_var} id col_d number col_e;
+	
+	valor				= {string} string
+						| {number} number
+						| {number_real} number_real;
+	
+	comandos			= comando*;
+	
+	comando				= {atribuicao}  identificador atribuicao expressao semicolon
+						| {leia}  leia par_d var par_e semicolon
+						| {escreva}  escreva par_d exp par_e semicolon
+						| {se} se_stt
+						| {enquanto} enquanto par_d expressao_logica par_e faca comandos fim_enquanto semicolon
+						| {avalie} avalie par_d expressao_logica par_e caso_stt* senao_caso_stt? fim_avalie semicolon
+						| {repita} repita comandos ate par_d expressao_logica par_e semicolon
+						| {para} para identificador de [inicial]:number ate [final]:number faca comandos fim_para semicolon
+						| {para_passo} para identificador de [inicial]:number passo [passos]:number ate [final]:number faca comandos fim_para semicolon;
+		
+	se_stt				= se expressao_logica entao comandos senao_stt? fim_se semicolon;
+	
+	senao_stt			= senao comandos;
+	
+	caso_stt			= caso valor dois_pontos comandos;
+	senao_caso_stt		= senao dois_pontos comandos;
+	
+	expressao			= {mais} expressao mais termo
+						| {menos} expressao menos termo
+						| {termo} termo;
+	
+	termo				= {mul} termo estrela fator
+						| {div} termo barra fator
+						| {fator} fator;
+	
+	fator				= {valor} valor
+						| {variavel} identificador
+						| {parenteses} par_d expressao_logica par_e;
+						
+	expressao_rel		= {relacional} expressao_rel op_rel expressao
+						| {expressao} expressao;
+	
+	op_rel				= {igual} igual 
+						| {diferente} diferente 
+						| {maior} maior 
+						| {maior_igual} maior_igual 
+						| {menor} menor 
+						| {menor_igual} menor_igual;
+	
+	operacao_logica		= {logica} operacao_logica op_logico expressao_rel
+						| {relacional} nao? expressao_rel;
+	
+	op_logico			= {e} e 
+						| {ou} ou 
+						| {xor} xor;
+		
+	expressao_logica	= {logica} operacao_logica;
