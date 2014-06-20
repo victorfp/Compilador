@@ -139,33 +139,36 @@ Productions
 	caso_stt			= caso valor dois_pontos comandos;
 	senao_caso_stt		= senao dois_pontos comandos;
 	
-	expressao			= {mais} expressao mais termo
-						| {menos} expressao menos termo
+	expressao			= {mais} termo mais expressao
+						| {menos} termo menos expressao
+						| {negacao} menos expressao
 						| {termo} termo;
-	
-	termo				= {mul} termo estrela fator
-						| {div} termo barra fator
-						| {fator} fator;
-	
-	fator				= {valor} valor
-						| {variavel} identificador
-						| {parenteses} par_d expressao_logica par_e;
 						
-	expressao_rel		= {relacional} expressao_rel op_rel expressao
-						| {expressao} expressao;
+	termo				= {mul} fator estrela termo
+						| {div} fator barra termo
+						| {fator} fator;
+						
+	fator				= {valor} valor
+						| {id} identificador
+						| {parenteses} par_d expressao par_e;
+
+	expressao_logica	= {logico} termo_logico op_logico expressao_logica
+						| {negacao} nao expressao_logica
+						| {termo} termo_logico;
+					
+	termo_logico		= {relacional} expressao op_rel termo_logico
+						| {fator} fator_logico;
+					
+	fator_logico		= {expressao} par_d expressao_logica par_e
+						| {base_relacional} [esq]:expressao op_rel [dir]:expressao;
 	
-	op_rel				= {igual} igual 
-						| {diferente} diferente 
-						| {maior} maior 
-						| {maior_igual} maior_igual 
-						| {menor} menor 
+	op_rel				= {igual} igual
+						| {diferente} diferente
+						| {maior} maior
+						| {menor} menor
+						| {maior_igual} maior_igual
 						| {menor_igual} menor_igual;
-	
-	operacao_logica		= {logica} operacao_logica op_logico expressao_rel
-						| {relacional} nao? expressao_rel;
-	
-	op_logico			= {e} e 
-						| {ou} ou 
+						
+	op_logico			= {e} e
+						| {ou} ou
 						| {xor} xor;
-		
-	expressao_logica	= {logica} operacao_logica;
