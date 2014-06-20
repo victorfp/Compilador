@@ -1,0 +1,11 @@
+programa teste02
+
+inicio
+/*
+	Testando para
+*/
+	para i de 0 ate 10 faca
+		escreva(i);
+	fim para;
+
+fim.
