@@ -1,6 +1,6 @@
-@ECHO off
-ECHO Iniciando o Compilador SimplePortugol
-ECHO Iniciando Testes
-java -jar .\compilador.jar %1
+echo off
+echo Iniciando o Compilador SimplePortugol
+echo Iniciando Testes
+java -jar .\compilador.jar ..\Teste\*
 echo Sequencia de Testes Finalizados
 pause
