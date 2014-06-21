@@ -1,0 +1,14 @@
+programa teste02
+
+inicio
+/*
+	Testando para
+*/
+	inteiro: i;
+	i:= 0;
+	enquanto i < 10 faca
+		escreva(i);
+		i := i + 1;
+	fim enquanto;
+
+fim.
