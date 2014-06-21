@@ -3,8 +3,8 @@
 Compilador SimplePortugol
 
 Author(s): Thiago Felipe e Victor Ferreira
-version	 : 1.0.2
-last-modified: 14/05/2014
+version	 : 2.0.0
+last-modified: 20/06/2014
 
 
 - Descricao
@@ -13,13 +13,17 @@ last-modified: 14/05/2014
 
 - Execucao
 	
-	Para realizar os testes Lexicos, coloque os arquivos de testes na pasta Teste com a extensao '.txt' e na pasta doc execute:
+	Há duas formas de realizar os Testes:
+	1) Coloque os arquivos de testes na pasta Teste com a extensao '.txt' e na pasta doc execute:
 		- Windows
 			execute o script compilador.bat;
 			
-		- Linux(testado no fedora 20)
+		- Linux(testado no fedora 20)(desatualizado)
 			no terminal execute:
 				chmod +x .\compilador.sh
 				.\compilador.sh
-		
-	Com isso serao realizados os testes localizados na pasta Teste.
+				
+	2) Execute os script passando o arquivo de teste como paramentro
+		- Windows
+			compilador.bat Path_arquivo;
+			
