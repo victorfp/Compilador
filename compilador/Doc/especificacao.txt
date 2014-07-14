@@ -3,7 +3,7 @@
 	
 	autors: Thiago Felipe Miranda Arcanjo,
 			Victor Ferreira Pereira
-	versao: 1.0.0
+	versao: 3.2.4 (AST version)
 	descricao: Desenvolver um compilador para a linguagem Portugol Simplificada
 	
 */
@@ -101,74 +101,118 @@ Ignored Tokens
 
 Productions
 
-	init				= start?;
-	start 				= programa id inicio declaracao? comandos fim;
-	declaracao			= declaracao? tipo dois_pontos var semicolon;
+	start {-> start}				= programa id inicio declaracao* comando* fim {-> New start(programa, id, inicio, [declaracao], [comando], fim) };
+	identificador{->identificador} 	= {id} id {-> New identificador.id(id)}
+									| {id_var} id col_d number col_e {-> New identificador.id_var(id, col_d, number, col_e)};
+	var	 							= {id} identificador var_tail {-> New var.id(identificador, var_tail)};
+	var_tail						= {tail} virgula var {-> New var_tail.tail(virgula, var)}
+									| {empty};
 	
-	var					= {id} identificador var_tail*;
+	valor{-> valor}					= {string} string {-> New valor.string(string)}
+									| {number} number {-> New valor.number(number)}
+									| {number_real} number_real {-> New valor.number_real(number_real)};
 	
-	var_tail			= virgula identificador;
+	declaracao{-> declaracao}		= {declar} tipo dois_pontos var semicolon { -> New declaracao.declar(tipo, dois_pontos, var, semicolon)};
 	
-	exp					= {exp} expressao exp_tail*;
-	
-	exp_tail			=  virgula expressao;
+	expressao{-> expressao}			= {mais} termo mais expressao {-> New expressao.mais(termo.expressao, expressao)}
+									| {menos} termo menos expressao{-> New expressao.menos(termo.expressao, expressao)}
+									| {negacao} menos expressao{-> New expressao.negacao(expressao)}
+									| {termo} termo {-> termo.expressao};
 						
-	identificador		= {id} id 
-						| {id_var} id col_d number col_e;
-	
-	valor				= {string} string
-						| {number} number
-						| {number_real} number_real;
-	
-	comandos			= comando*;
-	
-	comando				= {atribuicao}  identificador atribuicao expressao semicolon
-						| {leia}  leia par_d var par_e semicolon
-						| {escreva}  escreva par_d exp par_e semicolon
-						| {se} se_stt
-						| {enquanto} enquanto par_d expressao_logica par_e faca comandos fim_enquanto semicolon
-						| {avalie} avalie par_d expressao_logica par_e caso_stt* senao_caso_stt? fim_avalie semicolon
-						| {repita} repita comandos ate par_d expressao_logica par_e semicolon
-						| {para} para identificador de [inicial]:number ate [final]:number faca comandos fim_para semicolon
-						| {para_passo} para identificador de [inicial]:number passo [passos]:number ate [final]:number faca comandos fim_para semicolon;
-		
-	se_stt				= se expressao_logica entao comandos senao_stt? fim_se semicolon;
-	
-	senao_stt			= senao comandos;
-	
-	caso_stt			= caso valor dois_pontos comandos;
-	senao_caso_stt		= senao dois_pontos comandos;
-	
-	expressao			= {mais} termo mais expressao
-						| {menos} termo menos expressao
-						| {negacao} menos expressao
-						| {termo} termo;
+	termo {->expressao}				= {mul} fator estrela termo {-> New expressao.mul(fator.expressao, termo.expressao)}
+									| {div} fator barra termo {-> New expressao.div(fator.expressao, termo.expressao)}
+									| {fator} fator {-> fator.expressao};
 						
-	termo				= {mul} fator estrela termo
-						| {div} fator barra termo
-						| {fator} fator;
-						
-	fator				= {valor} valor
-						| {id} identificador
-						| {parenteses} par_d expressao par_e;
+	fator{-> expressao}				= {valor} valor {-> New expressao.valor(valor)}
+									| {id} identificador {-> New expressao.id(identificador)}
+									| {parenteses} par_d expressao par_e {-> New expressao.parenteses(expressao)};
+	
+	expressao_logica{->expressao_logica}	= {e} termo_logico e expressao_logica {-> New expressao_logica.e(termo_logico.expressao_logica, expressao_logica)}
+											| {ou} termo_logico ou expressao_logica {-> New expressao_logica.ou(termo_logico.expressao_logica, expressao_logica)}
+											| {xor} termo_logico xor expressao_logica {-> New expressao_logica.xor(termo_logico.expressao_logica, expressao_logica)}
+											| {negacao} nao expressao_logica {-> New expressao_logica.nao(expressao_logica)}
+											| {termo} termo_logico {-> termo_logico.expressao_logica};
+					
+	termo_logico{->expressao_logica}		= {relacional} expressao op_rel termo_logico {-> New expressao_logica.relacional(expressao, op_rel, termo_logico.expressao_logica)}
+											| {fator} fator_logico {-> fator_logico.expressao_logica};
+					
+	fator_logico{-> expressao_logica}		= {parenteses} par_d expressao_logica par_e {-> New expressao_logica.parenteses(expressao_logica)}
+											| {operacao} [esq]:expressao op_rel [dir]:expressao {-> New expressao_logica.operacao(esq.expressao, op_rel,dir.expressao)};
+	
+	op_rel	{->op_rel}						= {igual} igual {-> New op_rel.igual(igual)}
+											| {diferente} diferente {-> New op_rel.diferente(diferente)}
+											| {maior} maior {-> New op_rel.maior(maior)}
+											| {menor} menor {-> New op_rel.menor(menor)}
+											| {maior_igual} maior_igual {-> New op_rel.maior_igual(maior_igual)}
+											| {menor_igual} menor_igual {-> New op_rel.menor_igual(menor_igual)};
+	
+	exp	{-> exp}							= {exp} expressao exp_tail {-> New exp.exp(expressao, exp_tail)};
+	exp_tail {-> exp_tail}					= {tail} virgula exp {-> New exp_tail.tail(virgula, exp)}
+											| {empty};
+	
+	comando	{-> comando}					= {atribuicao} identificador atribuicao expressao semicolon {-> New comando.atribuicao(identificador, expressao)}
+											| {escreva}  escreva par_d exp par_e semicolon {-> New comando.escreva(exp)}
+											| {leia} leia par_d var par_e semicolon {-> New comando.leia(var)}
+											| {avalie} avalie par_d expressao par_e caso_stt* senao_caso_stt? fim_avalie semicolon {-> New comando.avalie(expressao)}
+											| {para} para identificador de [inicial]:number ate [final]:number faca comando+ fim_para semicolon {-> New comando.para(identificador)}
+											| {para_passo} para identificador de [inicial]:number passo [passos]:number ate [final]:number faca comando+ fim_para semicolon {-> New comando.para_passo(identificador)}
+											| {se} se par_d expressao_logica par_e entao comando+ senao_statement? fim_se semicolon {-> New comando.se(expressao_logica)}
+											| {repita} repita comando+ ate par_d expressao_logica par_e semicolon {-> New comando.repita(expressao_logica)}
+											| {enquanto} enquanto par_d expressao_logica par_e faca comando+ fim_enquanto semicolon {-> New comando.enquanto(expressao_logica)};
+	
+	caso_stt								= caso valor dois_pontos comando+;
+	senao_caso_stt							= senao dois_pontos comando+;
+	senao_statement							= senao comando+;
+	
+Abstract Syntax Tree
 
-	expressao_logica	= {logico} termo_logico op_logico expressao_logica
-						| {negacao} nao expressao_logica
-						| {termo} termo_logico;
-					
-	termo_logico		= {relacional} expressao op_rel termo_logico
-						| {fator} fator_logico;
-					
-	fator_logico		= {expressao} par_d expressao_logica par_e
-						| {base_relacional} [esq]:expressao op_rel [dir]:expressao;
+	start							= programa id inicio declaracao* comando* fim;
+	identificador 					= {id} id 
+									| {id_var} id col_d number col_e;
+	var 							= {id} identificador var_tail;
+	var_tail						= {tail} virgula var
+									| {empty};
 	
-	op_rel				= {igual} igual
-						| {diferente} diferente
-						| {maior} maior
-						| {menor} menor
-						| {maior_igual} maior_igual
-						| {menor_igual} menor_igual;
-						
-	op_logico			= {e} e
-						| {ou} ou
-						| {xor} xor;
+	valor							= {string} string
+									| {number} number
+									| {number_real} number_real;
+	
+	declaracao						= {declar} tipo dois_pontos var semicolon;
+	
+	expressao						= {mais} [esq]:expressao [dir]:expressao
+									| {menos} [esq]:expressao [dir]:expressao
+									| {mul} [esq]:expressao [dir]:expressao
+									| {div} [esq]:expressao [dir]:expressao
+									| {negacao} expressao
+									| {valor} valor
+									| {id} identificador
+									| {parenteses} expressao;
+									
+	expressao_logica				= {e} [esq]:expressao_logica [dir]:expressao_logica
+									| {ou} [esq]:expressao_logica [dir]:expressao_logica
+									| {xor} [esq]:expressao_logica [dir]:expressao_logica
+									| {nao} expressao_logica
+									| {relacional} expressao op_rel expressao_logica
+									| {parenteses} expressao_logica
+									| {operacao} [esq]:expressao op_rel [dir]:expressao;
+	
+	op_rel							= {igual} igual
+									| {diferente} diferente
+									| {maior} maior
+									| {menor} menor
+									| {maior_igual} maior_igual
+									| {menor_igual} menor_igual;
+									
+	exp								= {exp} expressao exp_tail;
+	exp_tail						= {tail} virgula exp
+									| {empty};
+									
+	comando							= {atribuicao} identificador expressao
+									| {escreva} exp
+									| {leia} var
+									| {avalie} expressao
+									| {para} identificador
+									| {para_passo} identificador
+									| {se} expressao_logica
+									| {repita} expressao_logica
+									| {enquanto} expressao_logica;

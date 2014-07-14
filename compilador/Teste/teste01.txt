@@ -1,12 +1,33 @@
-programa teste01
+programa teste
 
 inicio
-/*
-	Testando leia e escreva
-*/
-	caracter: nome;
-	escreva('Entre com seu nome:');
-	leia(nome);
-	escreva('Ola, ', nome);
 
+	inteiro : a;
+	inteiro : a;
+	inteiro : a;
+	
+	a:= 4;
+	a:= 'asd';
+	a:= -(a+b)*3/2;
+
+	escreva(a, a, a);
+	leia(a);
+	
+	avalie(a)
+		caso 1: escreva(a);
+		senao : a:= 2;
+	fim avalie;
+	se (nao (a = b)) entao
+		leia(a);
+		escreva(a);
+	fim se;
+	
+	repita
+		escreva(a);
+	ate (a = b);
+	
+	enquanto(a <> v) faca
+		leia(a);
+	fim enquanto;
+	
 fim.
