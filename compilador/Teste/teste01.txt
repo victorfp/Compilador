@@ -2,6 +2,7 @@ programa teste
 
 inicio
 
-	caractere: a, c[10];
-	c[2]:= 'a';
+	 para a de 0 passo 2 ate 10 faca
+	 	a:= 3;
+	 fim para;
 fim.
