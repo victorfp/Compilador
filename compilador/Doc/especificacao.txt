@@ -49,7 +49,7 @@ Tokens
 		{normal} avalie			= 'avalie';
 		{normal} caso 			= 'caso';
 		{normal} fim_avalie 	= 'fim avalie';
-		{normal} tipo 			= 'inteiro' | 'real' | 'caracter';
+		{normal} tipo 			= 'inteiro' | 'real' | 'caractere';
 		
 		{normal} mais 			= '+';
 		{normal} menos 			= '-';

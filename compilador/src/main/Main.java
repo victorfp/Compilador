@@ -21,7 +21,7 @@ public class Main {
 					Start s = p.parse();
 					s.apply(new SemanticAnalyzer());
 					//System.out.println("\nTeste Finalizado com Sucesso\n");
-					System.out.println(SemanticAnalyzer.simbolos);
+					//System.out.println(SemanticAnalyzer.simbolos);
 					r.close();
 				}
 			}

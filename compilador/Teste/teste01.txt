@@ -2,12 +2,6 @@ programa teste
 
 inicio
 
-	real: b,a,c;
-	se (nao((a = b) xor (a = 3))) entao
-		leia(a);
-	senao
-		a := '3';
-		escreva(a);
-	fim se;
-	
+	caractere: a, c[10];
+	c[2]:= 'a';
 fim.
