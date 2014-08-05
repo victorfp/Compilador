@@ -14,12 +14,14 @@ public class Main {
 			
 			if (args.length > 0){
 				for (int i = 0; i < args.length; i++) {
-					System.out.println("Iniciando Teste para '"+args[i]+"'\n");
+					//System.out.println("Iniciando Teste para '"+args[i]+"'\n");
 					r = new FileReader(args[i]);
 				
 					Parser p = new Parser(new MyLexer(new PushbackReader(r,1024)));
 					Start s = p.parse();
-					System.out.println("\nTeste Finalizado com Sucesso\n");
+					s.apply(new SemanticAnalyzer());
+					//System.out.println("\nTeste Finalizado com Sucesso\n");
+					System.out.println(SemanticAnalyzer.simbolos);
 					r.close();
 				}
 			}

@@ -2,32 +2,12 @@ programa teste
 
 inicio
 
-	inteiro : a;
-	inteiro : a;
-	inteiro : a;
-	
-	a:= 4;
-	a:= 'asd';
-	a:= -(a+b)*3/2;
-
-	escreva(a, a, a);
-	leia(a);
-	
-	avalie(a)
-		caso 1: escreva(a);
-		senao : a:= 2;
-	fim avalie;
-	se (nao (a = b)) entao
+	real: b,a,c;
+	se (nao((a = b) xor (a = 3))) entao
 		leia(a);
+	senao
+		a := '3';
 		escreva(a);
 	fim se;
-	
-	repita
-		escreva(a);
-	ate (a = b);
-	
-	enquanto(a <> v) faca
-		leia(a);
-	fim enquanto;
 	
 fim.

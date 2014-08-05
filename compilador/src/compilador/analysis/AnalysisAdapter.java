@@ -183,31 +183,13 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAEExpressaoLogica(AEExpressaoLogica node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAOuExpressaoLogica(AOuExpressaoLogica node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAXorExpressaoLogica(AXorExpressaoLogica node)
+    public void caseALogicaExpressaoLogica(ALogicaExpressaoLogica node)
     {
         defaultCase(node);
     }
 
     @Override
     public void caseANaoExpressaoLogica(ANaoExpressaoLogica node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseARelacionalExpressaoLogica(ARelacionalExpressaoLogica node)
     {
         defaultCase(node);
     }
@@ -220,42 +202,6 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseAOperacaoExpressaoLogica(AOperacaoExpressaoLogica node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAIgualOpRel(AIgualOpRel node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseADiferenteOpRel(ADiferenteOpRel node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAMaiorOpRel(AMaiorOpRel node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAMenorOpRel(AMenorOpRel node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAMaiorIgualOpRel(AMaiorIgualOpRel node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAMenorIgualOpRel(AMenorIgualOpRel node)
     {
         defaultCase(node);
     }

@@ -101,50 +101,52 @@ Ignored Tokens
 
 Productions
 
-	start {-> start}				= programa id inicio declaracao* comando* fim {-> New start(programa, id, inicio, [declaracao], [comando], fim) };
-	identificador{->identificador} 	= {id} id {-> New identificador.id(id)}
-									| {id_var} id col_d number col_e {-> New identificador.id_var(id, col_d, number, col_e)};
-	var	 							= {id} identificador var_tail {-> New var.id(identificador, var_tail)};
-	var_tail						= {tail} virgula var {-> New var_tail.tail(virgula, var)}
-									| {empty};
+	start {-> start}						= programa id inicio declaracao* comando* fim {-> New start(id, [declaracao], [comando]) };
+	identificador				 			= {id} id
+											| {id_var} id col_d number col_e ;
+									
+	var	 									= {id} identificador var_tail ;
+	var_tail								= {tail} virgula var
+											| {empty};
 	
-	valor{-> valor}					= {string} string {-> New valor.string(string)}
-									| {number} number {-> New valor.number(number)}
-									| {number_real} number_real {-> New valor.number_real(number_real)};
+	valor									= {string} string 
+											| {number} number 
+											| {number_real} number_real;
 	
-	declaracao{-> declaracao}		= {declar} tipo dois_pontos var semicolon { -> New declaracao.declar(tipo, dois_pontos, var, semicolon)};
+	declaracao{-> declaracao}				= {declar} tipo dois_pontos var semicolon { -> New declaracao.declar(tipo, var)};
 	
-	expressao{-> expressao}			= {mais} termo mais expressao {-> New expressao.mais(termo.expressao, expressao)}
-									| {menos} termo menos expressao{-> New expressao.menos(termo.expressao, expressao)}
-									| {negacao} menos expressao{-> New expressao.negacao(expressao)}
-									| {termo} termo {-> termo.expressao};
+	expressao{-> expressao}					= {mais} termo mais expressao {-> New expressao.mais(termo.expressao, expressao)}
+											| {menos} termo menos expressao{-> New expressao.menos(termo.expressao, expressao)}
+											| {negacao} menos expressao{-> New expressao.negacao(expressao)}
+											| {termo} termo {-> termo.expressao};
 						
-	termo {->expressao}				= {mul} fator estrela termo {-> New expressao.mul(fator.expressao, termo.expressao)}
-									| {div} fator barra termo {-> New expressao.div(fator.expressao, termo.expressao)}
-									| {fator} fator {-> fator.expressao};
+	termo {->expressao}						= {mul} fator estrela termo {-> New expressao.mul(fator.expressao, termo.expressao)}
+											| {div} fator barra termo {-> New expressao.div(fator.expressao, termo.expressao)}
+											| {fator} fator {-> fator.expressao};
 						
-	fator{-> expressao}				= {valor} valor {-> New expressao.valor(valor)}
-									| {id} identificador {-> New expressao.id(identificador)}
-									| {parenteses} par_d expressao par_e {-> New expressao.parenteses(expressao)};
+	fator{-> expressao}						= {valor} valor {-> New expressao.valor(valor)}
+											| {id} identificador {-> New expressao.id(identificador)}
+											| {parenteses} par_d expressao par_e {-> New expressao.parenteses(expressao)};
 	
-	expressao_logica{->expressao_logica}	= {e} termo_logico e expressao_logica {-> New expressao_logica.e(termo_logico.expressao_logica, expressao_logica)}
-											| {ou} termo_logico ou expressao_logica {-> New expressao_logica.ou(termo_logico.expressao_logica, expressao_logica)}
-											| {xor} termo_logico xor expressao_logica {-> New expressao_logica.xor(termo_logico.expressao_logica, expressao_logica)}
+	expressao_logica{->expressao_logica}	= {logica} termo_logico op_log expressao_logica {-> New expressao_logica.logica(termo_logico.expressao_logica, expressao_logica)}
 											| {negacao} nao expressao_logica {-> New expressao_logica.nao(expressao_logica)}
 											| {termo} termo_logico {-> termo_logico.expressao_logica};
-					
-	termo_logico{->expressao_logica}		= {relacional} expressao op_rel termo_logico {-> New expressao_logica.relacional(expressao, op_rel, termo_logico.expressao_logica)}
-											| {fator} fator_logico {-> fator_logico.expressao_logica};
-					
-	fator_logico{-> expressao_logica}		= {parenteses} par_d expressao_logica par_e {-> New expressao_logica.parenteses(expressao_logica)}
-											| {operacao} [esq]:expressao op_rel [dir]:expressao {-> New expressao_logica.operacao(esq.expressao, op_rel,dir.expressao)};
 	
-	op_rel	{->op_rel}						= {igual} igual {-> New op_rel.igual(igual)}
-											| {diferente} diferente {-> New op_rel.diferente(diferente)}
-											| {maior} maior {-> New op_rel.maior(maior)}
-											| {menor} menor {-> New op_rel.menor(menor)}
-											| {maior_igual} maior_igual {-> New op_rel.maior_igual(maior_igual)}
-											| {menor_igual} menor_igual {-> New op_rel.menor_igual(menor_igual)};
+	termo_logico{-> expressao_logica} 		= {relacional} fator_logico {-> fator_logico.expressao_logica}
+											| {operacao} [esq]:expressao op_rel [dir]:expressao {-> New expressao_logica.operacao(esq.expressao, dir.expressao)};
+					
+	fator_logico{-> expressao_logica}		= {parenteses} par_d expressao_logica par_e {-> New expressao_logica.parenteses(expressao_logica)};
+	
+	op_rel									= {igual} igual
+											| {diferente} diferente
+											| {maior} maior 
+											| {menor} menor 
+											| {maior_igual} maior_igual 
+											| {menor_igual} menor_igual ;
+	
+	op_log									= {e} e
+											| {ou} ou
+											| {xor} xor;
 	
 	exp	{-> exp}							= {exp} expressao exp_tail {-> New exp.exp(expressao, exp_tail)};
 	exp_tail {-> exp_tail}					= {tail} virgula exp {-> New exp_tail.tail(virgula, exp)}
@@ -166,7 +168,7 @@ Productions
 	
 Abstract Syntax Tree
 
-	start							= programa id inicio declaracao* comando* fim;
+	start							= id declaracao* comando*;
 	identificador 					= {id} id 
 									| {id_var} id col_d number col_e;
 	var 							= {id} identificador var_tail;
@@ -177,7 +179,7 @@ Abstract Syntax Tree
 									| {number} number
 									| {number_real} number_real;
 	
-	declaracao						= {declar} tipo dois_pontos var semicolon;
+	declaracao						= {declar} tipo var;
 	
 	expressao						= {mais} [esq]:expressao [dir]:expressao
 									| {menos} [esq]:expressao [dir]:expressao
@@ -188,20 +190,10 @@ Abstract Syntax Tree
 									| {id} identificador
 									| {parenteses} expressao;
 									
-	expressao_logica				= {e} [esq]:expressao_logica [dir]:expressao_logica
-									| {ou} [esq]:expressao_logica [dir]:expressao_logica
-									| {xor} [esq]:expressao_logica [dir]:expressao_logica
+	expressao_logica				= {logica} [esq]:expressao_logica [dir]:expressao_logica
 									| {nao} expressao_logica
-									| {relacional} expressao op_rel expressao_logica
 									| {parenteses} expressao_logica
-									| {operacao} [esq]:expressao op_rel [dir]:expressao;
-	
-	op_rel							= {igual} igual
-									| {diferente} diferente
-									| {maior} maior
-									| {menor} menor
-									| {maior_igual} maior_igual
-									| {menor_igual} menor_igual;
+									| {operacao} [esq]:expressao [dir]:expressao;
 									
 	exp								= {exp} expressao exp_tail;
 	exp_tail						= {tail} virgula exp

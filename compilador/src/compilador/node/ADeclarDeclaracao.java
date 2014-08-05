@@ -8,9 +8,7 @@ import compilador.analysis.*;
 public final class ADeclarDeclaracao extends PDeclaracao
 {
     private TTipo _tipo_;
-    private TDoisPontos _doisPontos_;
     private PVar _var_;
-    private TSemicolon _semicolon_;
 
     public ADeclarDeclaracao()
     {
@@ -19,18 +17,12 @@ public final class ADeclarDeclaracao extends PDeclaracao
 
     public ADeclarDeclaracao(
         @SuppressWarnings("hiding") TTipo _tipo_,
-        @SuppressWarnings("hiding") TDoisPontos _doisPontos_,
-        @SuppressWarnings("hiding") PVar _var_,
-        @SuppressWarnings("hiding") TSemicolon _semicolon_)
+        @SuppressWarnings("hiding") PVar _var_)
     {
         // Constructor
         setTipo(_tipo_);
 
-        setDoisPontos(_doisPontos_);
-
         setVar(_var_);
-
-        setSemicolon(_semicolon_);
 
     }
 
@@ -39,9 +31,7 @@ public final class ADeclarDeclaracao extends PDeclaracao
     {
         return new ADeclarDeclaracao(
             cloneNode(this._tipo_),
-            cloneNode(this._doisPontos_),
-            cloneNode(this._var_),
-            cloneNode(this._semicolon_));
+            cloneNode(this._var_));
     }
 
     @Override
@@ -75,31 +65,6 @@ public final class ADeclarDeclaracao extends PDeclaracao
         this._tipo_ = node;
     }
 
-    public TDoisPontos getDoisPontos()
-    {
-        return this._doisPontos_;
-    }
-
-    public void setDoisPontos(TDoisPontos node)
-    {
-        if(this._doisPontos_ != null)
-        {
-            this._doisPontos_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._doisPontos_ = node;
-    }
-
     public PVar getVar()
     {
         return this._var_;
@@ -125,39 +90,12 @@ public final class ADeclarDeclaracao extends PDeclaracao
         this._var_ = node;
     }
 
-    public TSemicolon getSemicolon()
-    {
-        return this._semicolon_;
-    }
-
-    public void setSemicolon(TSemicolon node)
-    {
-        if(this._semicolon_ != null)
-        {
-            this._semicolon_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._semicolon_ = node;
-    }
-
     @Override
     public String toString()
     {
         return ""
             + toString(this._tipo_)
-            + toString(this._doisPontos_)
-            + toString(this._var_)
-            + toString(this._semicolon_);
+            + toString(this._var_);
     }
 
     @Override
@@ -170,21 +108,9 @@ public final class ADeclarDeclaracao extends PDeclaracao
             return;
         }
 
-        if(this._doisPontos_ == child)
-        {
-            this._doisPontos_ = null;
-            return;
-        }
-
         if(this._var_ == child)
         {
             this._var_ = null;
-            return;
-        }
-
-        if(this._semicolon_ == child)
-        {
-            this._semicolon_ = null;
             return;
         }
 
@@ -201,21 +127,9 @@ public final class ADeclarDeclaracao extends PDeclaracao
             return;
         }
 
-        if(this._doisPontos_ == oldChild)
-        {
-            setDoisPontos((TDoisPontos) newChild);
-            return;
-        }
-
         if(this._var_ == oldChild)
         {
             setVar((PVar) newChild);
-            return;
-        }
-
-        if(this._semicolon_ == oldChild)
-        {
-            setSemicolon((TSemicolon) newChild);
             return;
         }
 
