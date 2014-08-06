@@ -5,19 +5,19 @@ package compilador.node;
 import compilador.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AOperacaoExpressaoLogica extends PExpressaoLogica
+public final class ALogicaExpressaoLogica extends PExpressaoLogica
 {
-    private PExpressao _esq_;
-    private PExpressao _dir_;
+    private PExpressaoLogica _esq_;
+    private PExpressaoLogica _dir_;
 
-    public AOperacaoExpressaoLogica()
+    public ALogicaExpressaoLogica()
     {
         // Constructor
     }
 
-    public AOperacaoExpressaoLogica(
-        @SuppressWarnings("hiding") PExpressao _esq_,
-        @SuppressWarnings("hiding") PExpressao _dir_)
+    public ALogicaExpressaoLogica(
+        @SuppressWarnings("hiding") PExpressaoLogica _esq_,
+        @SuppressWarnings("hiding") PExpressaoLogica _dir_)
     {
         // Constructor
         setEsq(_esq_);
@@ -29,7 +29,7 @@ public final class AOperacaoExpressaoLogica extends PExpressaoLogica
     @Override
     public Object clone()
     {
-        return new AOperacaoExpressaoLogica(
+        return new ALogicaExpressaoLogica(
             cloneNode(this._esq_),
             cloneNode(this._dir_));
     }
@@ -37,15 +37,15 @@ public final class AOperacaoExpressaoLogica extends PExpressaoLogica
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAOperacaoExpressaoLogica(this);
+        ((Analysis) sw).caseALogicaExpressaoLogica(this);
     }
 
-    public PExpressao getEsq()
+    public PExpressaoLogica getEsq()
     {
         return this._esq_;
     }
 
-    public void setEsq(PExpressao node)
+    public void setEsq(PExpressaoLogica node)
     {
         if(this._esq_ != null)
         {
@@ -65,12 +65,12 @@ public final class AOperacaoExpressaoLogica extends PExpressaoLogica
         this._esq_ = node;
     }
 
-    public PExpressao getDir()
+    public PExpressaoLogica getDir()
     {
         return this._dir_;
     }
 
-    public void setDir(PExpressao node)
+    public void setDir(PExpressaoLogica node)
     {
         if(this._dir_ != null)
         {
@@ -123,13 +123,13 @@ public final class AOperacaoExpressaoLogica extends PExpressaoLogica
         // Replace child
         if(this._esq_ == oldChild)
         {
-            setEsq((PExpressao) newChild);
+            setEsq((PExpressaoLogica) newChild);
             return;
         }
 
         if(this._dir_ == oldChild)
         {
-            setDir((PExpressao) newChild);
+            setDir((PExpressaoLogica) newChild);
             return;
         }
 

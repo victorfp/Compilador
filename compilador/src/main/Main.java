@@ -1,6 +1,8 @@
 package main;
 import java.io.*;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+
 import compilador.analysis.*;
 import compilador.lexer.*;
 import compilador.node.*;
@@ -35,6 +37,7 @@ public class Main {
 				
 					Parser p = new Parser(new MyLexer(new PushbackReader(r,1024)));
 					Start s = p.parse();
+					s.apply(new SemanticAnalyzer());
 					System.out.println("\nTeste Finalizado com Sucesso\n");
 					r.close();
 				}
@@ -42,7 +45,6 @@ public class Main {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		} 	
 	}
 }

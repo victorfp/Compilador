@@ -2,7 +2,9 @@ programa teste
 
 inicio
 
-	 para a de 0 passo 2 ate 10 faca
-	 	a:= 3;
-	 fim para;
+	inteiro: a, b[10];
+	caractere: d[10];
+	
+	b[1] := b[3] + d[4];
+
 fim.
