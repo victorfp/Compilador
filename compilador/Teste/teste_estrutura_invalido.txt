@@ -1,4 +1,0 @@
-programa_teste_estrutura_invalido
-inicio
-	@;
-fim.

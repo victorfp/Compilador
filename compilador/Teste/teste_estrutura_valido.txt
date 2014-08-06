@@ -1,8 +1,0 @@
-programa_teste_estrutura_valido
-inteiro valor.
-real valor_real;
-inicio
-	sequencia;
-	lógica;
-	estrutura;
-fim.

@@ -5,6 +5,6 @@ inicio
 	inteiro: a, b[10];
 	caractere: d[10];
 	
-	b[1] := a + 2.0;
+	b[1] := a + 2.0 + 'a';
 
 fim.
